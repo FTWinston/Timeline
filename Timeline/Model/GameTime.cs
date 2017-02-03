@@ -20,5 +20,9 @@ namespace Timeline.Model
         public static bool operator >(GameTime t1, GameTime t2) { return t1.Ticks > t2.Ticks; }
         public static bool operator <=(GameTime t1, GameTime t2) { return t1.Ticks <= t2.Ticks; }
         public static bool operator >=(GameTime t1, GameTime t2) { return t1.Ticks >= t2.Ticks; }
+
+        public override int GetHashCode() { return Ticks.GetHashCode(); }
+        public override bool Equals(object obj) { return Ticks.Equals(obj); }
+
     }
 }

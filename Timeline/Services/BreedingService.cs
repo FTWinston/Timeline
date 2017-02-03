@@ -20,8 +20,6 @@ namespace Timeline.Services
             var birthDate = mother.World.Date;
 
             var child = new Person(mother.World, seed, race, gender, mother, father, birthDate);
-            mother.Children.Add(child);
-            father.Children.Add(child);
             return child;
         }
     }

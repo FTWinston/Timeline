@@ -18,6 +18,8 @@ namespace Timeline.Model
             Mother = mother;
             Father = father;
             Birth = birth;
+
+            Children = new List<Person>();
         }
 
         public World World { get; private set; }

@@ -38,8 +38,11 @@ namespace Timeline.Services
 
         public static void SimulateYear(World world)
         {
-            foreach (var person in world.LivingPeople)
-                PersonService.SimulateYear(person);
+            if (world.Date.Ticks % 5 == 0)
+                Console.WriteLine("Year " + world.Date.Ticks);
+
+            var eligibleBachelors = DetermineEligibleBachelors(world);
+            world.LivingPeople.AsParallel().ForAll(p => PersonService.SimulateYear(p, eligibleBachelors));
 
             var newlyDead = world.LivingPeople.Where(p => p.IsDead);
             world.DeadPeople.AddRange(newlyDead);
@@ -49,6 +52,13 @@ namespace Timeline.Services
             world.NewPeople.Clear();
 
             world.Date += new GameTimeSpan() { Ticks = 1 };
+        }
+
+        private static List<Person> DetermineEligibleBachelors(World world)
+        {
+            return world.LivingPeople
+                .Where(candidate => candidate.Gender == Gender.Male && PersonService.IsChildBearingAge(candidate))
+                .ToList();
         }
     }
 }

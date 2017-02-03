@@ -9,7 +9,9 @@ namespace Timeline.Services
 {
     static class PersonService
     {
-        public static void SimulateYear(Person person)
+        private static object newChildMutex = new object();
+
+        public static void SimulateYear(Person person, List<Person> eligibleBachelors)
         {
             if (person.IsDead)
                 return;
@@ -23,12 +25,17 @@ namespace Timeline.Services
 
             if (ShouldBearYoung(person))
             {
-                var mate = ChooseMate(person);
+                var mate = ChooseMate(person, eligibleBachelors);
                 if (mate != null)
                 {
                     var child = BreedingService.Reproduce(person, mate);
                     if (child != null)
-                        person.World.NewPeople.Add(child);
+                        lock (newChildMutex)
+                        {
+                            person.Children.Add(child);
+                            mate.Children.Add(child);
+                            person.World.NewPeople.Add(child);
+                        }
                 }
             }
         }
@@ -39,7 +46,7 @@ namespace Timeline.Services
             return date.Ticks >= person.Birth.Ticks + person.Race.Lifespan.Mean;
         }
 
-        private static bool IsChildBearingAge(Person person)
+        public static bool IsChildBearingAge(Person person)
         {
             // TODO: use distribution, avoid casting etc
             if (person.Age < new GameTimeSpan() { Ticks = (long)person.Race.MinChildBearingAge.Mean })
@@ -62,21 +69,41 @@ namespace Timeline.Services
             return person.Random.NextDouble() < person.Race.FertilityRate;
         }
 
-        private static Person ChooseMate(Person potentialMother)
+        private static object mateChoiceMutex = new object();
+
+        private static Person ChooseMate(Person potentialMother, List<Person> eligibleBachelors)
         {
-            // find a mate for a woman. Essentially, pick a living male of childbearing age.
+            for (int iAttempt = 0; iAttempt < 3; iAttempt++)
+            {
+                lock (mateChoiceMutex)
+                {
+                    // pick one at random and make sure you're not related
+                    var choiceNumber = potentialMother.Random.Next(eligibleBachelors.Count);
+                    var potentialMale = eligibleBachelors[choiceNumber];
 
-            var availableMales = potentialMother.World.LivingPeople
-                .Where(candidate => candidate.Gender == Gender.Male && IsChildBearingAge(candidate))
-                .Where(candidate => candidate != potentialMother.Father && candidate.Mother != potentialMother) // no to Oedipus and Electra
-                .Where(candidate => (candidate.Father == null || candidate.Father != potentialMother.Father) && (candidate.Mother == null || candidate.Mother != potentialMother.Mother)) // no siblings or half siblings
-                ;
+                    if (AllowedToMate(potentialMother, potentialMale))
+                    {
+                        eligibleBachelors.RemoveAt(choiceNumber);
+                        return potentialMale;
+                    }
+                }
+            }
 
-            if (!availableMales.Any())
-                return null;
-            
-            int choiceNum = potentialMother.Random.Next(availableMales.Count());
-            return availableMales.ElementAt(choiceNum);
+            return null;
+        }
+
+        private static bool AllowedToMate(Person female, Person male)
+        {
+            if (female.Father == male || male.Mother == female)
+                return false;
+
+            if (male.Father == female.Father && female.Father != null)
+                return false;
+
+            if (male.Mother == female.Mother && female.Mother != null)
+                return false;
+
+            return true;
         }
     }
 }

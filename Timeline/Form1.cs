@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,8 +18,9 @@ namespace Timeline
         public Form1()
         {
             InitializeComponent();
-            
-            WorldConfiguration configuration = new WorldConfiguration(new Random().Next());
+
+            var seed = new Random().Next();
+            WorldConfiguration configuration = new WorldConfiguration(seed);
             configuration.Races.Add(new Race() {
                 Name = "Human",
                 Lifespan = new Distribution(75, 10),
@@ -30,7 +32,17 @@ namespace Timeline
             World world = new World(configuration);
 
             WorldService.Initialize(world);
-            WorldService.SimulateYears(world, 200);
+
+            var timer = new Stopwatch();
+            timer.Start();
+            WorldService.SimulateYears(world, 350);
+
+            timer.Stop();
+
+            lblCount.Text = string.Format("# Living: {0}, # dead: {1}", world.LivingPeople.Count, world.DeadPeople.Count);
+            lblCount.Text = string.Format("{0} years in {1}", world.Date.Ticks, timer.Elapsed);
+
+            lblCount.Visible = true;
         }
     }
 }
