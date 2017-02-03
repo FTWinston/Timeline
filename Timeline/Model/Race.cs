@@ -11,13 +11,13 @@ namespace Timeline.Model
     /// </summary>
     public class Race
     {
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
-        public Distribution Lifespan { get; private set; }
-        public Distribution MinChildbearingAge { get; private set; }
-        public Distribution MaxChildbearingAge { get; private set; }
+        public Distribution Lifespan { get; set; }
+        public Distribution MinChildBearingAge { get; set; }
+        public Distribution MaxChildBearingAge { get; set; }
 
         // TODO: should fertility rate be for a racial PAIRING rather than individual race?
-        public Distribution FertilityRate { get; private set; } // children per woman ... across a lifetime. Decreases with education.
+        public double FertilityRate { get; set; } // children per woman per year, for childbearing years only. Decreases with education?
     }
 }

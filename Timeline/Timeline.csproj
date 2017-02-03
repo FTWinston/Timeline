@@ -52,12 +52,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\GameTimeSpan.cs" />
+    <Compile Include="Model\WorldConfiguration.cs" />
+    <Compile Include="Services\BreedingService.cs" />
+    <Compile Include="Services\WorldService.cs" />
+    <Compile Include="Services\PersonService.cs" />
     <Compile Include="Model\Alignment.cs" />
     <Compile Include="Model\Distribution.cs" />
     <Compile Include="Model\Gender.cs" />
     <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\World.cs" />
     <Compile Include="Model\Race.cs" />
-    <Compile Include="Model\Time.cs" />
+    <Compile Include="Model\GameTime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -82,6 +88,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
