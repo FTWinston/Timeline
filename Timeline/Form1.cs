@@ -35,7 +35,7 @@ namespace Timeline
 
             var timer = new Stopwatch();
             timer.Start();
-            WorldService.SimulateYears(world, 350);
+            WorldService.SimulateYears(world, 400);
 
             timer.Stop();
 

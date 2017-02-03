@@ -9,9 +9,10 @@ namespace Timeline.Services
 {
     static class PersonService
     {
+        private static object deathMutex = new object();
         private static object newChildMutex = new object();
 
-        public static void SimulateYear(Person person, List<Person> eligibleBachelors)
+        public static void SimulateYear(Person person, Queue<Person> eligibleBachelors)
         {
             if (person.IsDead)
                 return;
@@ -19,6 +20,11 @@ namespace Timeline.Services
             var date = person.World.Date;
             if (ShouldDie(person, date))
             {
+                lock (deathMutex)
+                {
+                    person.World.DeadPeople.Add(person);
+                }
+
                 person.Death = date;
                 return;
             }
@@ -71,22 +77,25 @@ namespace Timeline.Services
 
         private static object mateChoiceMutex = new object();
 
-        private static Person ChooseMate(Person potentialMother, List<Person> eligibleBachelors)
+        private static Person ChooseMate(Person potentialMother, Queue<Person> eligibleBachelors)
         {
             for (int iAttempt = 0; iAttempt < 3; iAttempt++)
             {
+                Person potentialFather;
                 lock (mateChoiceMutex)
                 {
-                    // pick one at random and make sure you're not related
-                    var choiceNumber = potentialMother.Random.Next(eligibleBachelors.Count);
-                    var potentialMale = eligibleBachelors[choiceNumber];
-
-                    if (AllowedToMate(potentialMother, potentialMale))
-                    {
-                        eligibleBachelors.RemoveAt(choiceNumber);
-                        return potentialMale;
-                    }
+                    //if (!eligibleBachelors.Any()) skipping this check hasn't caused any errors so far
+                        //return null;
+                    potentialFather = eligibleBachelors.Dequeue();
                 }
+
+                if (AllowedToMate(potentialMother, potentialFather))
+                    return potentialFather;
+                else
+                    lock (mateChoiceMutex)
+                    {   
+                        eligibleBachelors.Enqueue(potentialFather);
+                    }
             }
 
             return null;

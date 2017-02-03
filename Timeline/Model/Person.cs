@@ -35,7 +35,7 @@ namespace Timeline.Model
         public GameTime Birth { get; private set; }
         public GameTime? Death { get; set; }
         public GameTimeSpan Age { get { return World.Date - Birth; } }
-        public bool IsDead { get { return Death.HasValue && Death.Value <= World.Date; } }
+        public bool IsDead { get { return Death.HasValue; } }
 
         public List<Person> Children { get; private set; }
     }

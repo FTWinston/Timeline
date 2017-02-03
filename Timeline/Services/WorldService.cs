@@ -42,23 +42,22 @@ namespace Timeline.Services
                 Console.WriteLine("Year " + world.Date.Ticks);
 
             var eligibleBachelors = DetermineEligibleBachelors(world);
+
             world.LivingPeople.AsParallel().ForAll(p => PersonService.SimulateYear(p, eligibleBachelors));
 
-            var newlyDead = world.LivingPeople.Where(p => p.IsDead);
-            world.DeadPeople.AddRange(newlyDead);
             world.LivingPeople.RemoveAll(p => p.IsDead);
-
             world.LivingPeople.AddRange(world.NewPeople);
             world.NewPeople.Clear();
 
             world.Date += new GameTimeSpan() { Ticks = 1 };
         }
 
-        private static List<Person> DetermineEligibleBachelors(World world)
+        private static Queue<Person> DetermineEligibleBachelors(World world)
         {
-            return world.LivingPeople
-                .Where(candidate => candidate.Gender == Gender.Male && PersonService.IsChildBearingAge(candidate))
-                .ToList();
+            var people = world.LivingPeople
+                .Where(candidate => candidate.Gender == Gender.Male && PersonService.IsChildBearingAge(candidate));
+
+            return new Queue<Person>(people);
         }
     }
 }
