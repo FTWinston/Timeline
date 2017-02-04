@@ -11,8 +11,11 @@ namespace Timeline.Model
         public Random Random { get; private set; }
         public List<Race> Races { get; private set; }
 
-        public WorldConfiguration(int seed)
+        public Map Map { get; set; }
+
+        public WorldConfiguration(int seed, Map map)
         {
+            Map = map;
             Races = new List<Race>();
 
             Random = new Random(seed);

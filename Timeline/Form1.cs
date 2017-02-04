@@ -28,7 +28,8 @@ namespace Timeline
             Random random = new Random();
 
             var seed = random.Next(int.MinValue, int.MaxValue);
-            WorldConfiguration configuration = new WorldConfiguration(seed);
+            var map = new Map(100, 100);
+            WorldConfiguration configuration = new WorldConfiguration(seed, map);
             configuration.Races.Add(new Race()
             {
                 Name = "Human",
