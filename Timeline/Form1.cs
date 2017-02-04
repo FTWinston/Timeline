@@ -19,20 +19,33 @@ namespace Timeline
         {
             InitializeComponent();
 
-            var seed = new Random().Next();
+            World world = CreateWorld();
+            SimulateWorld(world);
+        }
+
+        private World CreateWorld()
+        {
+            Random random = new Random();
+
+            var seed = random.Next(int.MinValue, int.MaxValue);
             WorldConfiguration configuration = new WorldConfiguration(seed);
-            configuration.Races.Add(new Race() {
+            configuration.Races.Add(new Race()
+            {
                 Name = "Human",
                 Lifespan = new Distribution(75, 10),
                 MinChildBearingAge = new Distribution(18, 2),
                 MaxChildBearingAge = new Distribution(42, 3),
                 FertilityRate = 0.2
             });
-            
+
             World world = new World(configuration);
 
             WorldService.Initialize(world);
+            return world;
+        }
 
+        private void SimulateWorld(World world)
+        {
             var timer = new Stopwatch();
             timer.Start();
             WorldService.SimulateYears(world, 400);
@@ -40,9 +53,9 @@ namespace Timeline
             timer.Stop();
 
             lblCount.Text = string.Format("# Living: {0}, # dead: {1}", world.LivingPeople.Count, world.DeadPeople.Count);
-            lblCount.Text = string.Format("{0} years in {1}", world.Date.Ticks, timer.Elapsed);
+            lblTime.Text = string.Format("{0} years in {1}", world.Date.Ticks, timer.Elapsed);
 
-            lblCount.Visible = true;
+            lblCount.Visible = lblTime.Visible = true;
         }
     }
 }
