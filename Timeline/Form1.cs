@@ -35,7 +35,7 @@ namespace Timeline
                 Lifespan = new Distribution(75, 10),
                 MinChildBearingAge = new Distribution(18, 2),
                 MaxChildBearingAge = new Distribution(42, 3),
-                FertilityRate = 0.2
+                FertilityChance = 5
             });
 
             World world = new World(configuration);

@@ -72,7 +72,7 @@ namespace Timeline.Services
                 return false;
 
             // this is only reproducable if this is called exactly once per year
-            return person.Random.NextDouble() < person.Race.FertilityRate;
+            return RandomService.GetNextInt(person, 0, person.Race.FertilityChance) == 0;
         }
 
         private static object mateChoiceMutex = new object();

@@ -53,8 +53,10 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GameTimeSpan.cs" />
+    <Compile Include="Model\Randomizable.cs" />
     <Compile Include="Model\WorldConfiguration.cs" />
     <Compile Include="Services\BreedingService.cs" />
+    <Compile Include="Services\RandomService.cs" />
     <Compile Include="Services\WorldService.cs" />
     <Compile Include="Services\PersonService.cs" />
     <Compile Include="Model\Alignment.cs" />

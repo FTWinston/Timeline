@@ -18,6 +18,6 @@ namespace Timeline.Model
         public Distribution MaxChildBearingAge { get; set; }
 
         // TODO: should fertility rate be for a racial PAIRING rather than individual race?
-        public double FertilityRate { get; set; } // children per woman per year, for childbearing years only. Decreases with education?
+        public int FertilityChance { get; set; } // 1 in N chance of a woman having a child each year, for childbearing years only. Decreases with education?
     }
 }

@@ -10,7 +10,6 @@ namespace Timeline.Model
     {
         public WorldConfiguration Configuration { get; private set; }
         public GameTime Date { get; set; }
-        public Random Random { get; internal set; }
 
         public List<Person> LivingPeople { get; private set; }
         public List<Person> DeadPeople { get; private set; }

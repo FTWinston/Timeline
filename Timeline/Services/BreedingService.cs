@@ -11,15 +11,18 @@ namespace Timeline.Services
     {
         internal static Person Reproduce(Person mother, Person father)
         {
-            int baseSeed = mother.Seed ^ father.Seed; // is this a good or sensible way to combine seeds?
+            int baseSeed = mother.RandomStart ^ father.RandomStart; // is this a good or sensible way to combine seeds?
             int numFullSiblings = mother.Children.Count(p => p.Father == father);
-            var seed = baseSeed + numFullSiblings;
+            var randomStart = baseSeed + numFullSiblings;
+            var randomIncrement = Math.Abs(mother.RandomIncrement - father.RandomIncrement);
+            if (randomIncrement == 0)
+                randomIncrement = mother.RandomIncrement;
 
             var race = mother.Race; // TODO: combining race, etc
-            var gender = mother.Random.Next(2) == 0 ? Gender.Female : Gender.Male;
+            var gender = RandomService.GetNextInt(mother, 0, 2) == 0 ? Gender.Female : Gender.Male;
             var birthDate = mother.World.Date;
 
-            var child = new Person(mother.World, seed, race, gender, mother, father, birthDate);
+            var child = new Person(mother.World, randomStart, randomIncrement, race, gender, mother, father, birthDate);
             return child;
         }
     }

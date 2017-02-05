@@ -8,13 +8,20 @@ namespace Timeline.Model
 {
     public class WorldConfiguration
     {
-        public int Seed { get; private set; }
+        public Random Random { get; private set; }
         public List<Race> Races { get; private set; }
 
         public WorldConfiguration(int seed)
         {
-            Seed = seed;
             Races = new List<Race>();
+
+            Random = new Random(seed);
+            Randomness = new int[10000];
+            for (int i = 0; i < Randomness.Length; i++)
+                Randomness[i] = Random.Next(int.MinValue, int.MaxValue);
         }
+
+
+        public int[] Randomness { get; private set; }
     }
 }

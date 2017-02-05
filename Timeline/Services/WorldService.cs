@@ -11,7 +11,6 @@ namespace Timeline.Services
     {
         public static void Initialize(World world)
         {
-            world.Random = new Random(world.Configuration.Seed);
             world.LivingPeople.Clear();
             world.DeadPeople.Clear();
 
@@ -24,8 +23,8 @@ namespace Timeline.Services
             {
                 for (int i = 0; i < numPerGender; i++)
                 {
-                    world.LivingPeople.Add(new Person(world, world.Random.Next(int.MinValue, int.MaxValue), race, Gender.Female, null, null, world.Date));
-                    world.LivingPeople.Add(new Person(world, world.Random.Next(int.MinValue, int.MaxValue), race, Gender.Male, null, null, world.Date));
+                    world.LivingPeople.Add(new Person(world, world.Configuration.Random.Next(world.Configuration.Randomness.Length), world.Configuration.Random.Next(1, 1000), race, Gender.Female, null, null, world.Date));
+                    world.LivingPeople.Add(new Person(world, world.Configuration.Random.Next(world.Configuration.Randomness.Length), world.Configuration.Random.Next(1, 1000), race, Gender.Male, null, null, world.Date));
                 }
             }
         }

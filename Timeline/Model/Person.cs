@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Timeline.Model
 {
-    public class Person
+    public class Person : Randomizable
     {
-        public Person(World world, int seed, Race race, Gender gender, Person mother, Person father, GameTime birth)
+        public Person(World world, int randomStart, int randomIncrement, Race race, Gender gender, Person mother, Person father, GameTime birth)
+            : base(world, randomStart, randomIncrement)
         {
-            World = world;
-            Seed = seed;
-            Random = new Random(seed);
             Race = race;
             Gender = gender;
             Mother = mother;
@@ -22,9 +20,6 @@ namespace Timeline.Model
             Children = new List<Person>();
         }
 
-        public World World { get; private set; }
-        public int Seed { get; private set; }
-        public Random Random { get; private set; }
         public Alignment Alignment { get; private set; }
 
         public string Name { get; set; }
