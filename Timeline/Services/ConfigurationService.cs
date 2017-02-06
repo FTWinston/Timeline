@@ -97,6 +97,16 @@ namespace Timeline.Services
             int height = int.Parse(mapNode.Attributes["height"].Value);
 
             var map = new Map(width, height);
+
+            foreach (XmlNode node in mapNode.ChildNodes)
+            {
+                var x = int.Parse(node.Attributes["x"].Value);
+                var y = int.Parse(node.Attributes["y"].Value);
+
+                var habitability = int.Parse(node.Attributes["habitability"].Value);
+                map.Areas[x, y].Habitability = habitability;
+            }
+
             return map;
         }
 

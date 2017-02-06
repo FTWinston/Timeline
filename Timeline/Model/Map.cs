@@ -15,14 +15,6 @@ namespace Timeline.Model
             Areas = new MapArea[width, height];
         }
 
-        public void PopulateRandomly(int seed)
-        {
-            var random = new Random();
-            for (int x = 0; x < Width; x++)
-                for (int y = 0; y < Height; y++)
-                    Areas[x, y].Habitability = random.NextDouble();
-        }
-
         private int Width, Height;
         public MapArea[,] Areas { get; private set; }
     }
