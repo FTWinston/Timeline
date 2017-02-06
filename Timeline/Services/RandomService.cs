@@ -37,6 +37,12 @@ namespace Timeline.Services
             return config.Randomness[randomizable.CurrentRandomPos];
         }
 
+        private static int Modulo(int x, int m)
+        {
+            int r = x % m;
+            return r < 0 ? r + m : r;
+        }
+
         public static bool GetNextBool(Randomizable randomizable)
         {
             return GetNext(randomizable) % 2 == 0;
@@ -49,12 +55,12 @@ namespace Timeline.Services
 
         public static int GetNextInt(Randomizable randomizable, int min, int max)
         {
-            return (GetNext(randomizable) % (max - min)) + min;
+            return Modulo(GetNext(randomizable), max - min) + min;
         }
 
         public static int GetPrevInt(Randomizable randomizable, int min, int max)
         {
-            return (GetPrevious(randomizable) % (max - min)) + min;
+            return Modulo(GetPrevious(randomizable), max - min) + min;
         }
     }
 }
