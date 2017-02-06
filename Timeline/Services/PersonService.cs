@@ -70,9 +70,9 @@ namespace Timeline.Services
 
             if (!IsChildBearingAge(person))
                 return false;
-
-            // this is only reproducable if this is called exactly once per year
-            return RandomService.GetNextInt(person, 0, person.Race.FertilityChance) == 0;
+            
+            // TODO: Argh, these fertility chances need to know the partner's race. Should we separate chance of attempt from chance of success?
+            return RandomService.GetNextInt(person, 0, person.Race.FertilityChances[person.Race].Item1) == 0;
         }
 
         private static object mateChoiceMutex = new object();

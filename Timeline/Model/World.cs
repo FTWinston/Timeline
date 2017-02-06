@@ -6,22 +6,24 @@ using System.Threading.Tasks;
 
 namespace Timeline.Model
 {
-    public class World
+    public class World : Randomizable
     {
-        public WorldConfiguration Configuration { get; private set; }
         public GameTime Date { get; set; }
 
         public List<Person> LivingPeople { get; private set; }
         public List<Person> DeadPeople { get; private set; }
         public List<Person> NewPeople { get; private set; }
 
+        public int NextEventIndex { get; set; }
+
         public World(WorldConfiguration configuration)
+            : base(configuration, 0, 1)
         {
-            Configuration = configuration;
             Date = new GameTime() { Ticks = 0 };
             LivingPeople = new List<Person>();
             DeadPeople = new List<Person>();
             NewPeople = new List<Person>();
+            NextEventIndex = 0;
         }
     }
 }

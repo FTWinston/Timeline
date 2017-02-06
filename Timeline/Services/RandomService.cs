@@ -9,9 +9,19 @@ namespace Timeline.Services
 {
     public static class RandomService
     {
+        public static int[] PopulateRandomness(int seed)
+        {
+            var random = new Random(seed);
+            var randomness = new int[10000];
+            for (int i = 0; i < randomness.Length; i++)
+                randomness[i] = random.Next(int.MinValue, int.MaxValue);
+
+            return randomness;
+        }
+
         private static int GetNext(Randomizable randomizable)
         {
-            var config = randomizable.World.Configuration;
+            var config = randomizable.Configuration;
             randomizable.CurrentRandomPos += randomizable.RandomIncrement;
             if (randomizable.CurrentRandomPos >= config.Randomness.Length)
                 randomizable.CurrentRandomPos -= config.Randomness.Length;
@@ -20,7 +30,7 @@ namespace Timeline.Services
 
         private static int GetPrevious(Randomizable randomizable)
         {
-            var config = randomizable.World.Configuration;
+            var config = randomizable.Configuration;
             randomizable.CurrentRandomPos -= randomizable.RandomIncrement;
             if (randomizable.CurrentRandomPos < 0)
                 randomizable.CurrentRandomPos += config.Randomness.Length;

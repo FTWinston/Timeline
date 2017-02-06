@@ -9,8 +9,9 @@ namespace Timeline.Model
     public class Person : Randomizable
     {
         public Person(World world, int randomStart, int randomIncrement, Race race, Gender gender, Person mother, Person father, GameTime birth)
-            : base(world, randomStart, randomIncrement)
+            : base(world.Configuration, randomStart, randomIncrement)
         {
+            World = world;
             Race = race;
             Gender = gender;
             Mother = mother;
@@ -20,6 +21,7 @@ namespace Timeline.Model
             Children = new List<Person>();
         }
 
+        public World World { get; set; }
         public Alignment Alignment { get; private set; }
         public string Name { get; set; }
         public Race Race { get; private set; }

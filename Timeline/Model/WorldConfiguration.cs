@@ -3,28 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Timeline.Events;
 
 namespace Timeline.Model
 {
     public class WorldConfiguration
     {
-        public Random Random { get; private set; }
-        public List<Race> Races { get; private set; }
+        public int[] Randomness { get; set; }
+
+        public Dictionary<string, Race> RacesByName { get; private set; }
+        public ICollection<Race> Races { get { return RacesByName.Values; } }
+        public List<Event> Events { get; private set; }
 
         public Map Map { get; set; }
 
-        public WorldConfiguration(int seed, Map map)
+        public WorldConfiguration()
         {
-            Map = map;
-            Races = new List<Race>();
-
-            Random = new Random(seed);
-            Randomness = new int[10000];
-            for (int i = 0; i < Randomness.Length; i++)
-                Randomness[i] = Random.Next(int.MinValue, int.MaxValue);
+            RacesByName = new Dictionary<string, Race>();
+            Events = new List<Event>();
         }
-
-
-        public int[] Randomness { get; private set; }
     }
 }

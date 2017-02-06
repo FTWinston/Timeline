@@ -25,20 +25,7 @@ namespace Timeline
 
         private World CreateWorld()
         {
-            Random random = new Random();
-
-            var seed = random.Next(int.MinValue, int.MaxValue);
-            var map = new Map(100, 100);
-            WorldConfiguration configuration = new WorldConfiguration(seed, map);
-            configuration.Races.Add(new Race()
-            {
-                Name = "Human",
-                Lifespan = new Distribution(75, 10),
-                MinChildBearingAge = new Distribution(18, 2),
-                MaxChildBearingAge = new Distribution(42, 3),
-                FertilityChance = 5
-            });
-
+            WorldConfiguration configuration = ConfigurationService.LoadFromFile("WorldConfiguration.xml");
             World world = new World(configuration);
 
             WorldService.Initialize(world);

@@ -13,20 +13,6 @@ namespace Timeline.Services
         {
             world.LivingPeople.Clear();
             world.DeadPeople.Clear();
-
-            CreateInitialPopulation(world, 5);
-        }
-
-        private static void CreateInitialPopulation(World world, int numPerGender)
-        {
-            foreach (var race in world.Configuration.Races)
-            {
-                for (int i = 0; i < numPerGender; i++)
-                {
-                    world.LivingPeople.Add(new Person(world, world.Configuration.Random.Next(world.Configuration.Randomness.Length), world.Configuration.Random.Next(1, 1000), race, Gender.Female, null, null, world.Date));
-                    world.LivingPeople.Add(new Person(world, world.Configuration.Random.Next(world.Configuration.Randomness.Length), world.Configuration.Random.Next(1, 1000), race, Gender.Male, null, null, world.Date));
-                }
-            }
         }
 
         public static void SimulateYears(World world, int numYears)
@@ -40,6 +26,8 @@ namespace Timeline.Services
             if (world.Date.Ticks % 5 == 0)
                 Console.WriteLine("Year " + world.Date.Ticks);
 
+            TriggerEvents(world);
+
             var eligibleBachelors = DetermineEligibleBachelors(world);
 
             world.LivingPeople.ForEach(p => PersonService.SimulateYear(p, eligibleBachelors));
@@ -49,6 +37,25 @@ namespace Timeline.Services
             world.NewPeople.Clear();
 
             world.Date += new GameTimeSpan() { Ticks = 1 };
+        }
+
+        private static void TriggerEvents(World world)
+        {
+            var events = world.Configuration.Events;
+
+            while (true)
+            {
+                if (world.NextEventIndex >= events.Count)
+                    break;
+
+                var nextEvent = events[world.NextEventIndex];
+                if (nextEvent.OccursAt > world.Date)
+                    break;
+
+                world.NextEventIndex++;
+                Console.WriteLine("Triggering event #" + world.NextEventIndex);
+                nextEvent.Perform(world);
+            }
         }
 
         private static Queue<Person> DetermineEligibleBachelors(World world)

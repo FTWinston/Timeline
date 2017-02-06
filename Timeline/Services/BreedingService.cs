@@ -7,10 +7,13 @@ using Timeline.Model;
 
 namespace Timeline.Services
 {
-    static class BreedingService
+    public static class BreedingService
     {
-        internal static Person Reproduce(Person mother, Person father)
+        public static Person Reproduce(Person mother, Person father)
         {
+            if (!CanReproduce(mother, father))
+                return null;
+
             int baseSeed = mother.RandomStart ^ father.RandomStart; // is this a good or sensible way to combine seeds?
             int numFullSiblings = mother.Children.Count(p => p.Father == father);
             var randomStart = baseSeed + numFullSiblings;
@@ -18,12 +21,17 @@ namespace Timeline.Services
             if (randomIncrement == 0)
                 randomIncrement = mother.RandomIncrement;
 
-            var race = mother.Race; // TODO: combining race, etc
+            var childRace = mother.Race.FertilityChances[father.Race].Item2;
             var gender = RandomService.GetNextBool(mother) ? Gender.Female : Gender.Male;
             var birthDate = mother.World.Date;
 
-            var child = new Person(mother.World, randomStart, randomIncrement, race, gender, mother, father, birthDate);
+            var child = new Person(mother.World, randomStart, randomIncrement, childRace, gender, mother, father, birthDate);
             return child;
+        }
+
+        public static bool CanReproduce(Person mother, Person father)
+        {
+            return mother.Race.FertilityChances.ContainsKey(father.Race);
         }
     }
 }
