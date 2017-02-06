@@ -42,7 +42,7 @@ namespace Timeline.Services
 
             var eligibleBachelors = DetermineEligibleBachelors(world);
 
-            world.LivingPeople.AsParallel().ForAll(p => PersonService.SimulateYear(p, eligibleBachelors));
+            world.LivingPeople.ForEach(p => PersonService.SimulateYear(p, eligibleBachelors));
 
             world.LivingPeople.RemoveAll(p => p.IsDead);
             world.LivingPeople.AddRange(world.NewPeople);

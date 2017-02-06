@@ -21,7 +21,6 @@ namespace Timeline.Model
         }
 
         public Alignment Alignment { get; private set; }
-
         public string Name { get; set; }
         public Race Race { get; private set; }
         public Gender Gender { get; private set; }

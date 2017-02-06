@@ -19,7 +19,7 @@ namespace Timeline.Services
                 randomIncrement = mother.RandomIncrement;
 
             var race = mother.Race; // TODO: combining race, etc
-            var gender = RandomService.GetNextInt(mother, 0, 2) == 0 ? Gender.Female : Gender.Male;
+            var gender = RandomService.GetNextBool(mother) ? Gender.Female : Gender.Male;
             var birthDate = mother.World.Date;
 
             var child = new Person(mother.World, randomStart, randomIncrement, race, gender, mother, father, birthDate);
