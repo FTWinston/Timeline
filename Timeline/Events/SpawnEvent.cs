@@ -28,7 +28,9 @@ namespace Timeline.Events
                 var randomStartPos = RandomService.GetNextInt(world, 0, world.Configuration.Randomness.Length);
                 var randomIncrement = RandomService.GetNextInt(world, 1, 1000);
 
-                world.LivingPeople.Add(new Person(world, randomStartPos, randomIncrement, Race, isFemale ? Gender.Female : Gender.Male, null, null, world.Date));
+                var person = new Person(world, randomStartPos, randomIncrement, Race, isFemale ? Gender.Female : Gender.Male, null, null, world.Date);
+                person.Location = Location;
+                world.LivingPeople.Add(person);
                 isFemale = !isFemale;
             }
         }

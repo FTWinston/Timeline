@@ -22,6 +22,7 @@ namespace Timeline.Model
         }
 
         public World World { get; set; }
+        public MapArea Location { get; set; }
         public Alignment Alignment { get; private set; }
         public string Name { get; set; }
         public Race Race { get; private set; }
