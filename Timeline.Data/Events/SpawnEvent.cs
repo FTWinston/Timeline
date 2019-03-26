@@ -25,7 +25,7 @@ namespace Timeline.Simulation.Events
                 var randomStartPos = randomService.GetNextInt(world, 0, randomService.Length);
                 var randomIncrement = randomService.GetNextInt(world, 1, 1000);
 
-                var person = new Person(world, randomStartPos, randomIncrement, Race, isFemale ? Gender.Female : Gender.Male, null, null, world.Date);
+                var person = new Person(randomStartPos, randomIncrement, Race, isFemale ? Gender.Female : Gender.Male, null, null, world.Date);
                 person.Location = Location;
                 world.LivingPeople.Add(person);
                 isFemale = !isFemale;

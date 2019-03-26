@@ -14,7 +14,7 @@ namespace Timeline.Simulation.Services
             RandomService = randomService;
         }
 
-        public Person Reproduce(Person mother, Person father)
+        public Person Reproduce(GameTime date, Person mother, Person father)
         {
             if (!CanReproduce(mother, father))
                 return null;
@@ -28,9 +28,8 @@ namespace Timeline.Simulation.Services
 
             var childRace = mother.Race.FertilityChances[father.Race].Item2;
             var gender = RandomService.GetNextBool(mother) ? Gender.Female : Gender.Male;
-            var birthDate = mother.World.Date;
 
-            var child = new Person(mother.World, randomStart, randomIncrement, childRace, gender, mother, father, birthDate);
+            var child = new Person(randomStart, randomIncrement, childRace, gender, mother, father, date);
             return child;
         }
 

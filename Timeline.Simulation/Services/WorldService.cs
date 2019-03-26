@@ -34,9 +34,9 @@ namespace Timeline.Simulation.Services
         {
             TriggerEvents();
 
-            var eligibleBachelors = DetermineEligibleBachelors();
+            var eligibleBachelors = DetermineEligibleBachelors(World.Date);
 
-            World.LivingPeople.ForEach(p => PersonService.SimulateYear(p, eligibleBachelors));
+            World.LivingPeople.ForEach(person => PersonService.SimulateYear(World, person, eligibleBachelors));
 
             World.LivingPeople.RemoveAll(p => p.IsDead);
             World.LivingPeople.AddRange(World.NewPeople);
@@ -64,10 +64,10 @@ namespace Timeline.Simulation.Services
             }
         }
 
-        private Queue<Person> DetermineEligibleBachelors()
+        private Queue<Person> DetermineEligibleBachelors(GameTime date)
         {
             var people = World.LivingPeople
-                .Where(candidate => candidate.Gender == Gender.Male && PersonService.IsChildBearingAge(candidate));
+                .Where(candidate => candidate.Gender == Gender.Male && PersonService.IsChildBearingAge(date, candidate));
 
             return new Queue<Person>(people);
         }

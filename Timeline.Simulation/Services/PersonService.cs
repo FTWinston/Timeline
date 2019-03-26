@@ -18,35 +18,35 @@ namespace Timeline.Simulation.Services
             BreedingService = breedingService;
         }
 
-        public void SimulateYear(Person person, Queue<Person> eligibleBachelors)
+        public void SimulateYear(World world, Person person, Queue<Person> eligibleBachelors)
         {
             if (person.IsDead)
                 return;
 
-            var date = person.World.Date;
+            var date = world.Date;
             if (ShouldDie(person, date))
             {
                 lock (deathMutex)
                 {
-                    person.World.DeadPeople.Add(person);
+                    world.DeadPeople.Add(person);
                 }
 
                 person.Death = date;
                 return;
             }
 
-            if (ShouldBearYoung(person))
+            if (ShouldBearYoung(date, person))
             {
                 var mate = ChooseMate(person, eligibleBachelors);
                 if (mate != null)
                 {
-                    var child = BreedingService.Reproduce(person, mate);
+                    var child = BreedingService.Reproduce(date, person, mate);
                     if (child != null)
                         lock (newChildMutex)
                         {
                             person.Children.Add(child);
                             mate.Children.Add(child);
-                            person.World.NewPeople.Add(child);
+                            world.NewPeople.Add(child);
                         }
                 }
             }
@@ -58,23 +58,25 @@ namespace Timeline.Simulation.Services
             return date.Ticks >= person.Birth.Ticks + person.Race.Lifespan.Mean;
         }
 
-        public bool IsChildBearingAge(Person person)
+        public bool IsChildBearingAge(GameTime date, Person person)
         {
+            var age = person.GetAgeAt(date);
+
             // TODO: use distribution, avoid casting etc
-            if (person.Age < new GameTimeSpan((long)person.Race.MinChildBearingAge.Mean))
+            if (age < new GameTimeSpan((long)person.Race.MinChildBearingAge.Mean))
                 return false;
-            if (person.Age > new GameTimeSpan((long)person.Race.MaxChildBearingAge.Mean))
+            if (age > new GameTimeSpan((long)person.Race.MaxChildBearingAge.Mean))
                 return false;
 
             return true;
         }
 
-        private bool ShouldBearYoung(Person person)
+        private bool ShouldBearYoung(GameTime date, Person person)
         {
             if (person.Gender != Gender.Female)
                 return false;
 
-            if (!IsChildBearingAge(person))
+            if (!IsChildBearingAge(date, person))
                 return false;
             
             // TODO: Argh, these fertility chances need to know the partner's race. Should we separate chance of attempt from chance of success?
