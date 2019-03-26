@@ -1,40 +1,48 @@
 ﻿using System;
 using System.Diagnostics;
 using Timeline.Data.Model;
+using Timeline.Data.Services;
 using Timeline.Simulation.Services;
 
 namespace Timeline.Runner
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
-            World world = CreateWorld();
-            SimulateWorld(world, 400);
+            var worldService = CreateWorld();
+
+            SimulateWorld(worldService, 400);
         }
 
-        private static World CreateWorld()
+        private static WorldService CreateWorld()
         {
             WorldConfiguration configuration = ConfigurationService.LoadFromFile("WorldConfiguration.xml");
-            World world = new World(configuration);
 
-            WorldService.Initialize(world);
-            return world;
+            var randomService = new RandomService(configuration.Seed);
+
+            var world = new World(configuration);
+
+            var worldService = new WorldService(world, randomService);
+
+            return worldService;
         }
 
-        private static void SimulateWorld(World world, int numYears)
+        private static void SimulateWorld(WorldService worldService, int numYears)
         {
+            var world = worldService.World;
+
             var timer = new Stopwatch();
             timer.Start();
 
             for (int year = 1; year <= numYears; year++)
             {
-                if (world.Date.Ticks % 10 == 0)
+                if (year % 10 == 0)
                 {
-                    Console.WriteLine($"Year {world.Date.Ticks} ({world.LivingPeople.Count} living, {world.DeadPeople.Count} dead)");
+                    Console.WriteLine($"Year {year} ({world.LivingPeople.Count} living, {world.DeadPeople.Count} dead)");
                 }
 
-                WorldService.SimulateYear(world);
+                worldService.SimulateYear();
             }
 
             timer.Stop();

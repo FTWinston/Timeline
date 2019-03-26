@@ -15,8 +15,7 @@ namespace Timeline.Simulation.Services
             fileContent.Load(filePath);
 
             int seed = DetermineSeed(fileContent);
-            WorldConfiguration configuration = new WorldConfiguration();
-            configuration.Randomness = RandomService.PopulateRandomness(seed);
+            var configuration = new WorldConfiguration(seed);
 
             LoadRaces(fileContent, configuration);
 
@@ -132,7 +131,7 @@ namespace Timeline.Simulation.Services
             var number = int.Parse(eventNode.Attributes["number"].Value);
 
             var ticks = long.Parse(eventNode.Attributes["year"].Value);
-            var time = new GameTime() { Ticks = ticks };
+            var time = new GameTime(ticks);
 
             var locationX = int.Parse(eventNode.Attributes["locationX"].Value);
             var locationY = int.Parse(eventNode.Attributes["locationY"].Value);

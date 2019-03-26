@@ -5,7 +5,7 @@ namespace Timeline.Data.Model
     public class Person : Randomizable
     {
         public Person(World world, int randomStart, int randomIncrement, Race race, Gender gender, Person mother, Person father, GameTime birth)
-            : base(world.Configuration, randomStart, randomIncrement)
+            : base(randomStart, randomIncrement)
         {
             World = world;
             Race = race;

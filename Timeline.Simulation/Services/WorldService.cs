@@ -2,60 +2,71 @@
 using System.Collections.Generic;
 using System.Linq;
 using Timeline.Data.Model;
+using Timeline.Data.Services;
 
 namespace Timeline.Simulation.Services
 {
-    public static class WorldService
+    public class WorldService
     {
-        public static void Initialize(World world)
+        public World World { get; }
+        RandomService RandomService { get; }
+        PersonService PersonService { get; }
+        BreedingService BreedingService { get; }
+
+        public WorldService(World world, RandomService randomService)
         {
+            RandomService = randomService;
+            BreedingService = new BreedingService(RandomService);
+            PersonService = new PersonService(RandomService, BreedingService);
+
+            World = world;
             world.LivingPeople.Clear();
             world.DeadPeople.Clear();
         }
 
-        public static void SimulateYears(World world, int numYears)
+        public void SimulateYears(int numYears)
         {
             for (int i = 0; i < numYears; i++)
-                SimulateYear(world);
+                SimulateYear();
         }
 
-        public static void SimulateYear(World world)
+        public void SimulateYear()
         {
-            TriggerEvents(world);
+            TriggerEvents();
 
-            var eligibleBachelors = DetermineEligibleBachelors(world);
+            var eligibleBachelors = DetermineEligibleBachelors();
 
-            world.LivingPeople.ForEach(p => PersonService.SimulateYear(p, eligibleBachelors));
+            World.LivingPeople.ForEach(p => PersonService.SimulateYear(p, eligibleBachelors));
 
-            world.LivingPeople.RemoveAll(p => p.IsDead);
-            world.LivingPeople.AddRange(world.NewPeople);
-            world.NewPeople.Clear();
+            World.LivingPeople.RemoveAll(p => p.IsDead);
+            World.LivingPeople.AddRange(World.NewPeople);
+            World.NewPeople.Clear();
 
-            world.Date += new GameTimeSpan() { Ticks = 1 };
+            World.Date += new GameTimeSpan(1);
         }
 
-        private static void TriggerEvents(World world)
+        private void TriggerEvents()
         {
-            var events = world.Configuration.Events;
+            var events = World.Configuration.Events;
 
             while (true)
             {
-                if (world.NextEventIndex >= events.Count)
+                if (World.NextEventIndex >= events.Count)
                     break;
 
-                var nextEvent = events[world.NextEventIndex];
-                if (nextEvent.OccursAt > world.Date)
+                var nextEvent = events[World.NextEventIndex];
+                if (nextEvent.OccursAt > World.Date)
                     break;
 
-                world.NextEventIndex++;
-                Console.WriteLine("Triggering event #" + world.NextEventIndex);
-                nextEvent.Perform(world);
+                World.NextEventIndex++;
+                Console.WriteLine($"Triggering event #{World.NextEventIndex}");
+                nextEvent.Perform(World, RandomService);
             }
         }
 
-        private static Queue<Person> DetermineEligibleBachelors(World world)
+        private Queue<Person> DetermineEligibleBachelors()
         {
-            var people = world.LivingPeople
+            var people = World.LivingPeople
                 .Where(candidate => candidate.Gender == Gender.Male && PersonService.IsChildBearingAge(candidate));
 
             return new Queue<Person>(people);

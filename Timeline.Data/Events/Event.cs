@@ -1,4 +1,5 @@
 ﻿using Timeline.Data.Model;
+using Timeline.Data.Services;
 
 namespace Timeline.Data.Events
 {
@@ -13,7 +14,6 @@ namespace Timeline.Data.Events
         public GameTime OccursAt { get; private set; }
         public MapArea Location { get; private set; }
 
-        public abstract void Perform(World world);
-        public abstract void Reverse(World world);
+        public abstract void Perform(World world, RandomService randomService);
     }
 }

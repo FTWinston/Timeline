@@ -1,14 +1,24 @@
 ﻿using System.Collections.Generic;
 using Timeline.Data.Model;
+using Timeline.Data.Services;
 
 namespace Timeline.Simulation.Services
 {
-    static class PersonService
+    public class PersonService
     {
-        private static object deathMutex = new object();
-        private static object newChildMutex = new object();
+        RandomService RandomService { get; }
+        BreedingService BreedingService { get; }
 
-        public static void SimulateYear(Person person, Queue<Person> eligibleBachelors)
+        private readonly object deathMutex = new object();
+        private readonly object newChildMutex = new object();
+
+        public PersonService(RandomService randomService, BreedingService breedingService)
+        {
+            RandomService = randomService;
+            BreedingService = breedingService;
+        }
+
+        public void SimulateYear(Person person, Queue<Person> eligibleBachelors)
         {
             if (person.IsDead)
                 return;
@@ -42,24 +52,24 @@ namespace Timeline.Simulation.Services
             }
         }
 
-        private static bool ShouldDie(Person person, GameTime date)
+        private bool ShouldDie(Person person, GameTime date)
         {
             // TODO: use distribution, not fixed racial lifespan mean
             return date.Ticks >= person.Birth.Ticks + person.Race.Lifespan.Mean;
         }
 
-        public static bool IsChildBearingAge(Person person)
+        public bool IsChildBearingAge(Person person)
         {
             // TODO: use distribution, avoid casting etc
-            if (person.Age < new GameTimeSpan() { Ticks = (long)person.Race.MinChildBearingAge.Mean })
+            if (person.Age < new GameTimeSpan((long)person.Race.MinChildBearingAge.Mean))
                 return false;
-            if (person.Age > new GameTimeSpan() { Ticks = (long)person.Race.MaxChildBearingAge.Mean })
+            if (person.Age > new GameTimeSpan((long)person.Race.MaxChildBearingAge.Mean))
                 return false;
 
             return true;
         }
 
-        private static bool ShouldBearYoung(Person person)
+        private bool ShouldBearYoung(Person person)
         {
             if (person.Gender != Gender.Female)
                 return false;

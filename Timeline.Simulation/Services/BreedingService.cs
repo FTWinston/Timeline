@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Linq;
 using Timeline.Data.Model;
+using Timeline.Data.Services;
 
 namespace Timeline.Simulation.Services
 {
-    public static class BreedingService
+    public class BreedingService
     {
-        public static Person Reproduce(Person mother, Person father)
+        RandomService RandomService { get; }
+
+        public BreedingService(RandomService randomService)
+        {
+            RandomService = randomService;
+        }
+
+        public Person Reproduce(Person mother, Person father)
         {
             if (!CanReproduce(mother, father))
                 return null;
@@ -26,7 +34,7 @@ namespace Timeline.Simulation.Services
             return child;
         }
 
-        public static bool CanReproduce(Person mother, Person father)
+        public bool CanReproduce(Person mother, Person father)
         {
             return mother.Race.FertilityChances.ContainsKey(father.Race);
         }

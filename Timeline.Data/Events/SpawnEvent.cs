@@ -1,7 +1,7 @@
 ﻿using System;
 using Timeline.Data.Events;
 using Timeline.Data.Model;
-using Timeline.Simulation.Services;
+using Timeline.Data.Services;
 
 namespace Timeline.Simulation.Events
 {
@@ -17,24 +17,19 @@ namespace Timeline.Simulation.Events
         public Race Race { get; private set; }
         public int Number { get; private set; }
 
-        public override void Perform(World world)
+        public override void Perform(World world, RandomService randomService)
         {
             bool isFemale = true;
             for (int i = 0; i < Number; i++)
             {
-                var randomStartPos = RandomService.GetNextInt(world, 0, world.Configuration.Randomness.Length);
-                var randomIncrement = RandomService.GetNextInt(world, 1, 1000);
+                var randomStartPos = randomService.GetNextInt(world, 0, randomService.Length);
+                var randomIncrement = randomService.GetNextInt(world, 1, 1000);
 
                 var person = new Person(world, randomStartPos, randomIncrement, Race, isFemale ? Gender.Female : Gender.Male, null, null, world.Date);
                 person.Location = Location;
                 world.LivingPeople.Add(person);
                 isFemale = !isFemale;
             }
-        }
-
-        public override void Reverse(World world)
-        {
-            throw new NotImplementedException();
         }
     }
 }
