@@ -1,0 +1,202 @@
+<World seed="123456789">
+	<Races>
+		<Race name="Human">
+			<Lifespan mean="75" deviation="10" />
+			<ChildbearingAgeMin mean="18" deviation="2" />
+			<ChildbearingAgeMax mean="41" deviation="3" />
+			
+			<Fertility>
+				<With father="Human" value="5" child="Human" />
+				<With father="Elf" value="8" child="Half-Elf" />
+				<With father="Half-Elf" value="6" child="Human" />
+				<With father="Orc" value="5" child="Half-Orc" />
+				<With father="Half-Orc" value="8" child="Human" />
+			</Fertility>
+		</Race>
+		<Race name="Elf">
+			<Lifespan mean="700" deviation="100" />
+			<ChildbearingAgeMin mean="50" deviation="10" />
+			<ChildbearingAgeMax mean="400" deviation="100" />
+			
+			<Fertility>
+				<With father="Elf" value="15" child="Elf" />
+				<With father="Human" value="25" child="Half-Elf" />
+				<With father="Half-Elf" value="20" child="Elf" />
+			</Fertility>
+		</Race>
+		<Race name="Half-Elf">
+			<Lifespan mean="180" deviation="25" />
+			<ChildbearingAgeMin mean="25" deviation="8" />
+			<ChildbearingAgeMax mean="120" deviation="20" />
+			
+			<Fertility>
+				<With father="Half-Elf" value="10" child="Half-Elf" />
+				<With father="Elf" value="16" child="Elf" />
+				<With father="Human" value="12" child="Human" />
+			</Fertility>
+		</Race>
+		<Race name="Orc">
+			<Lifespan mean="50" deviation="5" />
+			<ChildbearingAgeMin mean="16" deviation="3" />
+			<ChildbearingAgeMax mean="45" deviation="3" />
+			
+			<Fertility>
+				<With father="Orc" value="3" child="Orc" />
+				<With father="Half-Orc" value="5" child="Orc" />
+			</Fertility>
+		</Race>
+		<Race name="Half-Orc">
+			<Lifespan mean="55" deviation="7" />
+			<ChildbearingAgeMin mean="16" deviation="3" />
+			<ChildbearingAgeMax mean="45" deviation="4" />
+			
+			<Fertility>
+				<With father="Human" value="4" child="Human" />
+				<With father="Orc" value="3" child="Orc" />
+				<With father="Half-Orc" value="5" child="Half-Orc" />
+			</Fertility>
+		</Race>
+		<Race name="Dwarf">
+			<Lifespan mean="220" deviation="35" />
+			<ChildbearingAgeMin mean="25" deviation="8" />
+			<ChildbearingAgeMax mean="100" deviation="12" />
+			
+			<Fertility>
+				<With father="Dwarf" value="8" child="Dwarf" />
+			</Fertility>
+		</Race>
+		<Race name="Halfling">
+			<Lifespan mean="100" deviation="10" />
+			<ChildbearingAgeMin mean="20" deviation="3" />
+			<ChildbearingAgeMax mean="60" deviation="6" />
+			
+			<Fertility>
+				<With father="Halfling" value="6" child="Halfling" />
+			</Fertility>
+		</Race>
+		<Race name="Gnome">
+			<Lifespan mean="300" deviation="22" />
+			<ChildbearingAgeMin mean="50" deviation="5" />
+			<ChildbearingAgeMax mean="200" deviation="12" />
+			
+			<Fertility>
+				<With father="Gnome" value="10" child="Gnome" />
+			</Fertility>
+		</Race>
+	</Races>
+
+  <Map width="100" height="100">
+    <Area x="0" y="0" habitability="1" />
+    <Area x="0" y="1" habitability="2" />
+    <Area x="0" y="2" habitability="3" />
+    <Area x="0" y="3" habitability="1" />
+    <Area x="0" y="4" habitability="2" />
+    <Area x="0" y="5" habitability="3" />
+    <Area x="0" y="6" habitability="1" />
+    <Area x="0" y="7" habitability="2" />
+    <Area x="0" y="8" habitability="3" />
+    <Area x="0" y="9" habitability="1" />
+    <Area x="1" y="0" habitability="2" />
+    <Area x="1" y="1" habitability="3" />
+    <Area x="1" y="2" habitability="1" />
+    <Area x="1" y="3" habitability="2" />
+    <Area x="1" y="4" habitability="3" />
+    <Area x="1" y="5" habitability="1" />
+    <Area x="1" y="6" habitability="2" />
+    <Area x="1" y="7" habitability="3" />
+    <Area x="1" y="8" habitability="1" />
+    <Area x="1" y="9" habitability="2" />
+    <Area x="2" y="0" habitability="3" />
+    <Area x="2" y="1" habitability="1" />
+    <Area x="2" y="2" habitability="2" />
+    <Area x="2" y="3" habitability="3" />
+    <Area x="2" y="4" habitability="1" />
+    <Area x="2" y="5" habitability="2" />
+    <Area x="2" y="6" habitability="3" />
+    <Area x="2" y="7" habitability="1" />
+    <Area x="2" y="8" habitability="2" />
+    <Area x="2" y="9" habitability="3" />
+    <Area x="3" y="0" habitability="1" />
+    <Area x="3" y="1" habitability="2" />
+    <Area x="3" y="2" habitability="3" />
+    <Area x="3" y="3" habitability="1" />
+    <Area x="3" y="4" habitability="2" />
+    <Area x="3" y="5" habitability="3" />
+    <Area x="3" y="6" habitability="1" />
+    <Area x="3" y="7" habitability="2" />
+    <Area x="3" y="8" habitability="3" />
+    <Area x="3" y="9" habitability="1" />
+    <Area x="4" y="0" habitability="2" />
+    <Area x="4" y="1" habitability="3" />
+    <Area x="4" y="2" habitability="1" />
+    <Area x="4" y="3" habitability="2" />
+    <Area x="4" y="4" habitability="3" />
+    <Area x="4" y="5" habitability="1" />
+    <Area x="4" y="6" habitability="2" />
+    <Area x="4" y="7" habitability="3" />
+    <Area x="4" y="8" habitability="1" />
+    <Area x="4" y="9" habitability="2" />
+    <Area x="5" y="0" habitability="3" />
+    <Area x="5" y="1" habitability="1" />
+    <Area x="5" y="2" habitability="2" />
+    <Area x="5" y="3" habitability="3" />
+    <Area x="5" y="4" habitability="1" />
+    <Area x="5" y="5" habitability="2" />
+    <Area x="5" y="6" habitability="3" />
+    <Area x="5" y="7" habitability="1" />
+    <Area x="5" y="8" habitability="2" />
+    <Area x="5" y="9" habitability="3" />
+    <Area x="6" y="0" habitability="1" />
+    <Area x="6" y="1" habitability="2" />
+    <Area x="6" y="2" habitability="3" />
+    <Area x="6" y="3" habitability="1" />
+    <Area x="6" y="4" habitability="2" />
+    <Area x="6" y="5" habitability="3" />
+    <Area x="6" y="6" habitability="1" />
+    <Area x="6" y="7" habitability="2" />
+    <Area x="6" y="8" habitability="3" />
+    <Area x="6" y="9" habitability="1" />
+    <Area x="7" y="0" habitability="2" />
+    <Area x="7" y="1" habitability="3" />
+    <Area x="7" y="2" habitability="1" />
+    <Area x="7" y="3" habitability="2" />
+    <Area x="7" y="4" habitability="3" />
+    <Area x="7" y="5" habitability="1" />
+    <Area x="7" y="6" habitability="2" />
+    <Area x="7" y="7" habitability="3" />
+    <Area x="7" y="8" habitability="1" />
+    <Area x="7" y="9" habitability="2" />
+    <Area x="8" y="0" habitability="3" />
+    <Area x="8" y="1" habitability="1" />
+    <Area x="8" y="2" habitability="2" />
+    <Area x="8" y="3" habitability="3" />
+    <Area x="8" y="4" habitability="1" />
+    <Area x="8" y="5" habitability="2" />
+    <Area x="8" y="6" habitability="3" />
+    <Area x="8" y="7" habitability="1" />
+    <Area x="8" y="8" habitability="2" />
+    <Area x="8" y="9" habitability="3" />
+    <Area x="9" y="0" habitability="1" />
+    <Area x="9" y="1" habitability="2" />
+    <Area x="9" y="2" habitability="3" />
+    <Area x="9" y="3" habitability="1" />
+    <Area x="9" y="4" habitability="2" />
+    <Area x="9" y="5" habitability="3" />
+    <Area x="9" y="6" habitability="1" />
+    <Area x="9" y="7" habitability="2" />
+    <Area x="9" y="8" habitability="3" />
+    <Area x="9" y="9" habitability="1" />
+  </Map>
+
+  <Events>
+    <Spawn race="Human" number="10" locationX="80" locationY="20" year="1" />
+    <!--
+		<Spawn race="Elf" number="6" locationX="50" locationY="50" year="1" />
+		<Spawn race="Dwarf" number="8" locationX="20" locationY="20" year="100" />
+		<Spawn race="Gnome" number="8" locationX="20" locationY="50" year="150" />
+		<Spawn race="Human" number="10" locationX="80" locationY="20" year="200" />
+		<Spawn race="Orc" number="10" locationX="80" locationY="80" year="200" />
+		<Spawn race="Halfling" number="10" locationX="20" locationY="80" year="250" />
+    -->
+  </Events>
+</World>
