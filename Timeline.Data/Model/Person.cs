@@ -25,8 +25,12 @@ namespace Timeline.Data.Model
         public Person Father { get; set; }
         public GameTime Birth { get; private set; }
         public GameTime? Death { get; set; }
-        public GameTimeSpan GetAgeAt(GameTime date) => date - Birth;
+        public GameTimeSpan GetAge(GameTime date) => date - Birth;
         public bool IsDead { get { return Death.HasValue; } }
+
+        public GameTime NaturalDeathDate { get; set; }
+        public GameTime ChildbearingAgeStart { get; set; }
+        public GameTime ChildbearingAgeEnd { get; set; }
 
         public List<Person> Children { get; private set; }
     }

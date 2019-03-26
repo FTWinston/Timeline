@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Timeline.Data.Model;
 using Timeline.Data.Services;
 
@@ -42,30 +43,35 @@ namespace Timeline.Simulation.Services
                 {
                     var child = BreedingService.Reproduce(date, person, mate);
                     if (child != null)
+                    {
+                        SetMilestoneDates(date, child);
+
                         lock (newChildMutex)
                         {
                             person.Children.Add(child);
                             mate.Children.Add(child);
                             world.NewPeople.Add(child);
                         }
+                    }
                 }
             }
         }
 
+        private void SetMilestoneDates(GameTime date, Person person)
+        {
+            person.ChildbearingAgeStart = date + person.Race.MinChildBearingAge.Get(person);
+            person.ChildbearingAgeEnd = date + person.Race.MaxChildBearingAge.Get(person);
+            person.NaturalDeathDate = date + person.Race.Lifespan.Get(person);
+        }
+
         private bool ShouldDie(Person person, GameTime date)
         {
-            // TODO: use distribution, not fixed racial lifespan mean
-            return date.Ticks >= person.Birth.Ticks + person.Race.Lifespan.Mean;
+            return date >= person.NaturalDeathDate;
         }
 
         public bool IsChildBearingAge(GameTime date, Person person)
         {
-            var age = person.GetAgeAt(date);
-
-            // TODO: use distribution, avoid casting etc
-            if (age < new GameTimeSpan((long)person.Race.MinChildBearingAge.Mean))
-                return false;
-            if (age > new GameTimeSpan((long)person.Race.MaxChildBearingAge.Mean))
+            if (date < person.ChildbearingAgeStart || date > person.ChildbearingAgeEnd)
                 return false;
 
             return true;
